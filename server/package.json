@@ -1,0 +1,29 @@
+{
+  "name": "datascope-server",
+  "version": "1.0.0",
+  "description": "DataScope Server",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "db:migrate": "node src/db/migrate.js",
+    "db:seed": "node src/db/seeds/generate-records.js",
+    "db:setup": "node src/db/migrate.js && node src/db/seeds/seed-users.js && node src/db/seeds/generate-records.js",
+    "perf": "node src/db/perf/explain-report.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.4",
+    "helmet": "^8.3.0",
+    "ioredis": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.6.0",
+    "nodemon": "^3.1.14"
+  }
+}
