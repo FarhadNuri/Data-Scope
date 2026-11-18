@@ -23,8 +23,21 @@ const app = express();
 // Security headers
 app.use(helmet());
 
-// Cross-Origin Resource Sharing restricted to the frontend URL
-app.use(cors({ origin: env.FRONTEND_URL }));
+// Cross-Origin Resource Sharing: allow configured FRONTEND_URL or allow all origins if not strictly matched
+const allowedOrigin = env.FRONTEND_URL;
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, or server-to-server)
+      if (!origin) return callback(null, true);
+      if (!allowedOrigin || allowedOrigin === '*' || origin === allowedOrigin || origin.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Permissive for production deployment cross-origin
+    },
+    credentials: true,
+  })
+);
 
 // Parse JSON request bodies up to 1MB
 app.use(express.json({ limit: '1mb' }));
