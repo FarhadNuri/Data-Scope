@@ -52,9 +52,16 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root ping endpoint
+app.get('/', (req, res) => {
+  res.json({ success: true, message: 'DataScope API server running', apiVersion: 'v1' });
+});
+
 // 1. Public routes (accessible without an authentication token)
 app.use('/api/v1/health', healthRoutes);
 app.use('/api/v1/auth', authRoutes);
+app.use('/auth', authRoutes); // Fallback if client requests without /api/v1 prefix
+app.use('/health', healthRoutes);
 
 // 2. Global authentication barrier: all routes defined below this line require a valid token
 app.use('/api/v1', authenticate);
